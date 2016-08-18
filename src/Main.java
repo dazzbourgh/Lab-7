@@ -8,7 +8,7 @@ public class Main {
         Transaction t = new Transaction();
         Reader r = new Reader(t);
         try {
-            r.setPath("Transactions.txt");
+            r.setPath("src\\Transactions.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return;
