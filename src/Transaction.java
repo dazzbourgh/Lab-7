@@ -16,7 +16,7 @@ public class Transaction {
         num = -1;
     }
 
-    public synchronized void print(){
+    public void print(){
 
         System.out.println("Order number: #" + num);
         System.out.println("  Date: " + date);

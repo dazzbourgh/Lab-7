@@ -58,6 +58,7 @@ public class ReaderConcurrent implements Runnable {
     public void run() {
         try {
             while(true) {
+                t = new Transaction();
                 formTransaction(parseString());
                 barrier.await();
                 t = exchanger.exchange(t);
@@ -67,6 +68,7 @@ public class ReaderConcurrent implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (NullPointerException e) {
+            System.out.println("---END OF FILE---");
             return;
         } catch (BrokenBarrierException e) {
             e.printStackTrace();
