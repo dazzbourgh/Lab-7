@@ -2,9 +2,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Exchanger;
 
 /**
@@ -13,26 +10,10 @@ import java.util.concurrent.Exchanger;
 public class ReaderConcurrent implements Runnable {
     private BufferedReader bufferedReader;
     private Transaction t;
-    private Exchanger<Transaction> exchanger;private CyclicBarrier barrier;
-
-    public void setBarrier(CyclicBarrier b){
-        barrier = b;
-    }
-
-    public Exchanger<Transaction> getExchanger() {
-        return exchanger;
-    }
+    private Exchanger<Transaction> exchanger;
 
     public void setExchanger(Exchanger<Transaction> exchanger){
         this.exchanger = exchanger;
-    }
-
-    public Transaction getT() {
-        return t;
-    }
-
-    public void setT(Transaction t) {
-        this.t = t;
     }
 
     public ReaderConcurrent(String path, Transaction t) throws FileNotFoundException{
@@ -60,7 +41,6 @@ public class ReaderConcurrent implements Runnable {
             while(true) {
                 t = new Transaction();
                 formTransaction(parseString());
-                barrier.await();
                 t = exchanger.exchange(t);
             }
         } catch (IOException e) {
@@ -70,8 +50,6 @@ public class ReaderConcurrent implements Runnable {
         } catch (NullPointerException e) {
             System.out.println("---END OF FILE---");
             return;
-        } catch (BrokenBarrierException e) {
-            e.printStackTrace();
         }
     }
 

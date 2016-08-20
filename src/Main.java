@@ -1,5 +1,4 @@
 import java.io.FileNotFoundException;
-import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Exchanger;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,7 +28,6 @@ public class Main {
     private void executeConcurrent(){
         ExecutorService executorServiceR = Executors.newSingleThreadExecutor();
         ExecutorService executorServiceW = Executors.newSingleThreadExecutor();
-        CyclicBarrier barrier = new CyclicBarrier(2);
         Transaction t = new Transaction();
         Exchanger<Transaction> exchanger = new Exchanger<>();
         ReaderConcurrent r;
@@ -43,8 +41,6 @@ public class Main {
         r.setExchanger(exchanger);
         w.setExchanger(exchanger);
         w.setProducer(executorServiceR);
-        r.setBarrier(barrier);
-        w.setBarrier(barrier);
         executorServiceR.execute(r);
         executorServiceW.execute(w);
     }
